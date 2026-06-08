@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GRIPD — Stop met schuiven</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF4500;
+    --green: #22c55e;
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --gray: #888888;
+    --light: #1a1a1a;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .nav-tag {
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--gray);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding: 90px 20px 60px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 80% 40% at 50% 30%, rgba(255,69,0,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(255,69,0,0.5);
+    color: var(--orange);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    margin-top: 12px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* HEADLINE */
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 14vw, 88px);
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  .hero-title .accent { color: var(--orange); }
+
+  /* COUNTER — hoog op pagina */
+  .counter-block {
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s ease 0.15s both;
+  }
+
+  .counter-bar-wrap {
+    width: min(280px, 80vw);
+    height: 3px;
+    background: var(--light);
+    border-radius: 2px;
+    margin: 0 auto 10px;
+    overflow: hidden;
+  }
+
+  .counter-bar {
+    height: 100%;
+    width: 4%;
+    background: var(--orange);
+    border-radius: 2px;
+    transition: width 1.2s ease;
+  }
+
+  .counter-text {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .counter-text span { color: var(--orange); font-weight: 500; }
+
+  /* SUB */
+  .hero-sub {
+    font-size: clamp(14px, 4vw, 17px);
+    font-weight: 300;
+    color: var(--gray);
+    margin-bottom: 20px;
+    max-width: 400px;
+    line-height: 1.7;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 500; }
+
+  /* DEV NOTICE */
+  .dev-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(255,69,0,0.07);
+    border: 1px solid rgba(255,69,0,0.2);
+    border-radius: 3px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 420px;
+    animation: fadeUp 0.5s ease 0.25s both;
+    text-align: left;
+  }
+
+  .dev-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+    margin-top: 5px;
+    animation: pulse 1.5s ease infinite;
+  }
+
+  .dev-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  .dev-text strong { color: var(--white); font-weight: 500; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* BULLETS — voor het formulier */
+  .bullets {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease 0.3s both;
+  }
+
+  .bullet {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: left;
+  }
+
+  .bullet:last-child { border-bottom: none; }
+
+  .bullet-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .bullet-text {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.4;
+  }
+
+  /* FOUNDING DEAL */
+  .founding-deal {
+    background: var(--light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid var(--orange);
+    border-radius: 3px;
+    padding: 14px 16px;
+    width: 100%;
+    max-width: 420px;
+    text-align: left;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s ease 0.35s both;
+  }
+
+  .deal-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 5px;
+  }
+
+  .deal-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .deal-text strong { font-weight: 500; color: var(--orange); }
+
+  .deal-sub {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  /* FORM */
+  .form-wrap {
+    width: 100%;
+    max-width: 420px;
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    background: var(--light);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 15px 18px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input::placeholder { color: rgba(255,255,255,0.22); }
+  input:focus { border-color: var(--orange); }
+
+  select {
+    width: 100%;
+    background: var(--light);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.9);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 15px 18px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+
+  select:focus { border-color: var(--orange); }
+
+  select option {
+    background: #1a1a1a;
+    color: var(--white);
+  }
+
+  .cta-btn {
+    width: 100%;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    padding: 17px 24px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cta-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+  .cta-btn:active { transform: translateY(0); opacity: 0.85; }
+
+  .form-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 12px;
+  }
+
+  .form-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  /* SUCCESS */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 28px 20px;
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .success-msg .s-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+
+  .success-msg .s-sub {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* SOCIAL PROOF */
+  .social-proof {
+    margin-top: 32px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: fadeUp 0.5s ease 0.5s both;
+  }
+
+  .social-proof span { color: rgba(255,255,255,0.4); }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* EXIT INTENT */
+  .exit-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .exit-overlay.show { display: flex; }
+
+  .exit-box {
+    background: #111;
+    border: 1px solid rgba(255,69,0,0.4);
+    border-radius: 4px;
+    padding: 32px 24px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .exit-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .exit-sub {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+
+  .exit-sub strong { color: var(--orange); font-weight: 500; }
+
+  .exit-stay {
+    width: 100%;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 14px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .exit-leave {
+    width: 100%;
+    background: transparent;
+    color: rgba(255,255,255,0.25);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">GRIPD</div>
+  <div class="nav-tag">Stay GRIPD</div>
+</nav>
+
+<section class="hero">
+
+  <div class="badge">Alleen voor de eerste 1000</div>
+
+  <h1 class="hero-title">
+    De enige gripsok<br>gebouwd voor <span class="accent">HYROX.</span>
+  </h1>
+
+  <div class="counter-block">
+    <div class="counter-bar-wrap">
+      <div class="counter-bar" id="bar"></div>
+    </div>
+    <div class="counter-text"><span id="count">38</span> / 1000 plekken vergeven</div>
+  </div>
+
+  <p class="hero-sub">
+    De enige gripsok gebouwd voor HYROX.<br>
+    <strong>Niet voor voetbal. Niet voor yoga. Voor jouw HYROX event.</strong>
+  </p>
+
+  <div class="dev-notice">
+    <div class="dev-dot"></div>
+    <div class="dev-text">
+      <strong>In ontwikkeling.</strong> Meld je nu aan. We geven je een seintje zodra GRIPD er is.
+    </div>
+  </div>
+
+  <div class="bullets">
+    <div class="bullet">
+      <div class="bullet-dot"></div>
+      <div class="bullet-text">Geen slip op de sled. Nooit meer.</div>
+    </div>
+    <div class="bullet">
+      <div class="bullet-dot"></div>
+      <div class="bullet-text">8km + 8 stations. Nul blaren.</div>
+    </div>
+    <div class="bullet">
+      <div class="bullet-dot"></div>
+      <div class="bullet-text">Farmer's carry op volle kracht.</div>
+    </div>
+  </div>
+
+  <div class="founding-deal">
+    <div class="deal-label">Founding member deal</div>
+    <div class="deal-text">Eerste 1000 krijgen <strong>3 paar voor €24,95</strong></div>
+    <div class="deal-sub">Daarna 2 paar. Nooit meer beschikbaar tegen deze prijs.</div>
+  </div>
+
+  <div class="form-wrap">
+    <div id="form-container">
+      <div class="form-row">
+        <input type="text" id="fname" placeholder="Voornaam" autocomplete="given-name" autocorrect="off" autocapitalize="words"/>
+        <input type="email" id="email" placeholder="E-mailadres" autocomplete="email" autocorrect="off" autocapitalize="none" inputmode="email"/>
+        <select id="maat">
+          <option value="" disabled selected>Schoenmaat</option>
+          <option value="36">36</option>
+          <option value="37">37</option>
+          <option value="38">38</option>
+          <option value="39">39</option>
+          <option value="40">40</option>
+          <option value="41">41</option>
+          <option value="42">42</option>
+          <option value="43">43</option>
+          <option value="44">44</option>
+          <option value="45">45</option>
+          <option value="46">46</option>
+          <option value="47">47</option>
+        </select>
+      </div>
+      <button class="cta-btn" onclick="handleSubmit()">Ja, informeer mij als ze er zijn voor €24,95 →</button>
+      <div class="form-notes">
+        <div class="form-note">Geen betaling nu. Gratis aanmelden.</div>
+        <div class="form-note">Geen spam. Alleen het seintje als we lanceren.</div>
+      </div>
+    </div>
+
+    <div class="success-msg" id="success">
+      <div class="s-title">Je staat erin.</div>
+      <div class="s-sub">We sturen je een seintje zodra GRIPD er is.<br><br>Stay GRIPD.</div>
+    </div>
+  </div>
+
+  <div class="social-proof">
+    Getest door atleten in <span>Amsterdam, Rotterdam en Utrecht</span>
+  </div>
+
+</section>
+
+<footer>© 2026 GRIPD · gripd.nl</footer>
+
+<!-- EXIT INTENT -->
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-box">
+    <div class="exit-title">Wacht even.</div>
+    <div class="exit-sub">
+      Je founding member deal vervalt als je weggaat.<br>
+      <strong>3 paar voor €24,95</strong> is alleen voor de eerste 1000.
+    </div>
+    <button class="exit-stay" onclick="closeExit()">Ik claim mijn plek</button>
+    <button class="exit-leave" onclick="document.getElementById('exitOverlay').classList.remove('show')">Nee, ik ga weg</button>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var count = parseInt(document.getElementById('count').textContent);
+      document.getElementById('bar').style.width = (count / 1000 * 100) + '%';
+    }, 700);
+  });
+
+  // Exit intent desktop
+  var exitShown = false;
+  document.addEventListener('mouseleave', function(e) {
+    if (e.clientY < 10 && !exitShown && !document.getElementById('success').style.display === 'block') {
+      exitShown = true;
+      document.getElementById('exitOverlay').classList.add('show');
+    }
+  });
+
+  function closeExit() {
+    document.getElementById('exitOverlay').classList.remove('show');
+    document.getElementById('fname').focus();
+  }
+
+  function handleSubmit() {
+    var fname = document.getElementById('fname').value.trim();
+    var email = document.getElementById('email').value.trim();
+
+    if (!fname) {
+      document.getElementById('fname').style.borderColor = '#FF4500';
+      document.getElementById('fname').focus();
+      return;
+    }
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      document.getElementById('email').style.borderColor = '#FF4500';
+      document.getElementById('email').focus();
+      return;
+    }
+
+    var maat = document.getElementById('maat').value;
+    if (!maat) {
+      document.getElementById('maat').style.borderColor = '#FF4500';
+      return;
+    }
+
+    var current = parseInt(document.getElementById('count').textContent);
+    var newCount = current + 1;
+    document.getElementById('count').textContent = newCount;
+    document.getElementById('bar').style.width = (newCount / 1000 * 100) + '%';
+
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }
+</script>
+</body>
+</html>
