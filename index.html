@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>GRIPD — Stop met schuiven</title>
+<title>GRIPD — Stay GRIPD</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,7 +27,6 @@
     overflow-x: hidden;
   }
 
-  /* NAV */
   nav {
     padding: 20px 24px;
     display: flex;
@@ -58,7 +57,6 @@
     text-transform: uppercase;
   }
 
-  /* HERO */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -78,7 +76,6 @@
     pointer-events: none;
   }
 
-  /* BADGE */
   .badge {
     display: inline-block;
     border: 1px solid rgba(255,69,0,0.5);
@@ -94,12 +91,11 @@
     animation: fadeUp 0.5s ease both;
   }
 
-  /* HEADLINE */
   .hero-title {
     font-family: 'Playfair Display', serif;
     font-weight: 900;
-    font-size: clamp(48px, 14vw, 88px);
-    line-height: 1;
+    font-size: clamp(42px, 12vw, 88px);
+    line-height: 1.05;
     letter-spacing: -1px;
     margin-bottom: 16px;
     animation: fadeUp 0.5s ease 0.1s both;
@@ -107,7 +103,6 @@
 
   .hero-title .accent { color: var(--orange); }
 
-  /* COUNTER — hoog op pagina */
   .counter-block {
     margin-bottom: 20px;
     animation: fadeUp 0.5s ease 0.15s both;
@@ -139,7 +134,6 @@
 
   .counter-text span { color: var(--orange); font-weight: 500; }
 
-  /* SUB */
   .hero-sub {
     font-size: clamp(14px, 4vw, 17px);
     font-weight: 300;
@@ -152,7 +146,6 @@
 
   .hero-sub strong { color: var(--white); font-weight: 500; }
 
-  /* DEV NOTICE */
   .dev-notice {
     display: flex;
     align-items: flex-start;
@@ -192,7 +185,6 @@
     50% { opacity: 0.3; }
   }
 
-  /* BULLETS — voor het formulier */
   .bullets {
     display: flex;
     flex-direction: column;
@@ -207,7 +199,7 @@
 
   .bullet {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 14px;
     padding: 14px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -222,16 +214,24 @@
     border-radius: 50%;
     background: var(--orange);
     flex-shrink: 0;
+    margin-top: 6px;
   }
 
   .bullet-text {
     font-size: 13px;
-    font-weight: 400;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.4;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
   }
 
-  /* FOUNDING DEAL */
+  .bullet-text strong {
+    color: var(--white);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+    font-size: 14px;
+  }
+
   .founding-deal {
     background: var(--light);
     border: 1px solid rgba(255,255,255,0.06);
@@ -269,7 +269,6 @@
     font-weight: 300;
   }
 
-  /* FORM */
   .form-wrap {
     width: 100%;
     max-width: 420px;
@@ -324,11 +323,7 @@
   }
 
   select:focus { border-color: var(--orange); }
-
-  select option {
-    background: #1a1a1a;
-    color: var(--white);
-  }
+  select option { background: #1a1a1a; color: var(--white); }
 
   .cta-btn {
     width: 100%;
@@ -363,7 +358,6 @@
     text-align: center;
   }
 
-  /* SUCCESS */
   .success-msg {
     display: none;
     text-align: center;
@@ -387,7 +381,6 @@
     font-weight: 300;
   }
 
-  /* SOCIAL PROOF */
   .social-proof {
     margin-top: 32px;
     font-size: 11px;
@@ -409,7 +402,6 @@
     border-top: 1px solid rgba(255,255,255,0.04);
   }
 
-  /* EXIT INTENT */
   .exit-overlay {
     display: none;
     position: fixed;
@@ -496,7 +488,7 @@
   <div class="badge">Alleen voor de eerste 1000</div>
 
   <h1 class="hero-title">
-    De enige gripsok<br>gebouwd voor <span class="accent">HYROX.</span>
+    De sok die niet opgeeft.<br><span class="accent">Jij ook niet.</span>
   </h1>
 
   <div class="counter-block">
@@ -507,8 +499,8 @@
   </div>
 
   <p class="hero-sub">
-    De enige gripsok gebouwd voor HYROX.<br>
-    <strong>Niet voor voetbal. Niet voor yoga. Voor jouw HYROX event.</strong>
+    Ultradun. Antislip. Zakt nooit af.<br>
+    <strong>Niet voor voetbal. Niet voor yoga. Voor jouw race.</strong>
   </p>
 
   <div class="dev-notice">
@@ -521,22 +513,31 @@
   <div class="bullets">
     <div class="bullet">
       <div class="bullet-dot"></div>
-      <div class="bullet-text">Geen slip op de sled. Nooit meer.</div>
+      <div class="bullet-text">
+        <strong>Nul slip. Nul blaren.</strong>
+        Antislip grip onderop vergrendelt je voet. Geen interne beweging, geen frictie, geen blaren over 8km.
+      </div>
     </div>
     <div class="bullet">
       <div class="bullet-dot"></div>
-      <div class="bullet-text">8km + 8 stations. Nul blaren.</div>
+      <div class="bullet-text">
+        <strong>Zakt nooit af.</strong>
+        Dubbele griprand bovenin houdt de sok op zijn plek. Van de start tot de finish.
+      </div>
     </div>
     <div class="bullet">
       <div class="bullet-dot"></div>
-      <div class="bullet-text">Farmer's carry op volle kracht.</div>
+      <div class="bullet-text">
+        <strong>Zit als een tweede huid.</strong>
+        Ultradun materiaal. Zuigt zich niet vol met zweet. Nooit warme voeten. Nooit te veel.
+      </div>
     </div>
   </div>
 
   <div class="founding-deal">
     <div class="deal-label">Founding member deal</div>
-    <div class="deal-text">Eerste 1000 krijgen <strong>3 paar voor €24,95</strong></div>
-    <div class="deal-sub">Daarna 2 paar. Nooit meer beschikbaar tegen deze prijs.</div>
+    <div class="deal-text">Eerste 1000 krijgen <strong>3e paar gratis</strong></div>
+    <div class="deal-sub">Normale prijs €34,95 voor 2 paar. Nooit meer beschikbaar.</div>
   </div>
 
   <div class="form-wrap">
@@ -564,7 +565,7 @@
         <div style="position:absolute;left:-5000px;" aria-hidden="true">
           <input type="text" name="b_a75d4269bed4dcddddb07c0cd_169bd3f699" tabindex="-1" value="">
         </div>
-        <button type="submit" class="cta-btn" onclick="return handleSubmit()">Ja, informeer mij als ze er zijn voor €24,95 →</button>
+        <button type="submit" class="cta-btn" onclick="return handleSubmit()">Ja, geef mij mijn 3e paar gratis →</button>
         <div class="form-notes">
           <div class="form-note">Geen betaling nu. Gratis aanmelden.</div>
           <div class="form-note">Geen spam. Alleen het seintje als we lanceren.</div>
@@ -586,13 +587,12 @@
 
 <footer>© 2026 GRIPD · gripd.nl</footer>
 
-<!-- EXIT INTENT -->
 <div class="exit-overlay" id="exitOverlay">
   <div class="exit-box">
     <div class="exit-title">Wacht even.</div>
     <div class="exit-sub">
       Je founding member deal vervalt als je weggaat.<br>
-      <strong>3 paar voor €24,95</strong> is alleen voor de eerste 1000.
+      <strong>3e paar gratis</strong> is alleen voor de eerste 1000.
     </div>
     <button class="exit-stay" onclick="closeExit()">Ik claim mijn plek</button>
     <button class="exit-leave" onclick="document.getElementById('exitOverlay').classList.remove('show')">Nee, ik ga weg</button>
@@ -607,10 +607,9 @@
     }, 700);
   });
 
-  // Exit intent desktop
   var exitShown = false;
   document.addEventListener('mouseleave', function(e) {
-    if (e.clientY < 10 && !exitShown && !document.getElementById('success').style.display === 'block') {
+    if (e.clientY < 10 && !exitShown) {
       exitShown = true;
       document.getElementById('exitOverlay').classList.add('show');
     }
